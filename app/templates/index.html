@@ -1,0 +1,23 @@
+{% extends  'base.html' %}
+
+{% block title %}
+    Taxi
+{% endblock %}
+
+{% block header %}
+    This is Taxi page
+{% endblock %}
+
+{% block content %}
+    <form action="{{ url_for('order') }} " method="POST">
+        <input type="text"  name="address" required="required" placeholder="Address"><br>
+        <input type="text"  name="phone" required="required" placeholder="Phone"><br>
+        <input type="submit">
+    </form>
+
+    <div>
+    {% for user in users %}
+        <p>{{ user.phone }} | {{ user.address}}</p>
+    {% endfor %}
+    </div>
+{% endblock %}

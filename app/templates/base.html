@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% block scripts%}
+
+    {% endblock %}
+    <title>
+        {% block title %}
+
+        {% endblock %} | Flask app
+
+    </title>
+</head>
+<body>
+    <ul>
+        <li><a href="{{ url_for('index') }}">Index</a></li>
+        <li><a href="{{ url_for('login') }}">Login in</a></li>
+    </ul>
+    <h1>
+        {% block header %}
+
+        {% endblock %}
+    </h1>
+    <div>
+        {% block content%}
+
+        {% endblock %}
+    </div>
+    <footer>
+
+    </footer>
+</body>
+</html>

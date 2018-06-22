@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Admin panel
+{% endblock %}
+
+{% block header%}
+    Admin Panel
+{% endblock %}
+
+{% block content %}
+    <form action="{{ url_for('login_in') }}" method="POST">
+        <input type="text" name="phone" required="required" placeholder="Phone"> <br/>
+        <input type="password" name="password" required="required" placeholder="Password"> <br/>
+        <input type="submit">
+    </form>
+{% endblock %}
