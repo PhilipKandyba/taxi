@@ -1,0 +1,17 @@
+{% extends  'base.html' %}
+
+{% block title %}
+    List
+{% endblock %}
+
+{% block header %}
+    This is List page
+{% endblock %}
+
+{% block content %}
+    <div>
+    {% for user in users %}
+        <p>{{ user.phone }} | {{ user.address}}</p>
+    {% endfor %}
+    </div>
+{% endblock %}

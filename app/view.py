@@ -1,14 +1,13 @@
 from app import app
 from app import db
-from flask import render_template, request
+from flask import render_template, request, jsonify
 from models import Users
 from werkzeug.security import check_password_hash
 
 
 @app.route('/')
 def index():
-    users = Users.query.all()
-    return render_template('index.html', users=users)
+    return render_template('index.html')
 
 
 @app.route('/order', methods=['POST'])
@@ -23,13 +22,13 @@ def order():
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
-    if request.method == "POST":
-        phone = request.form['phone']
-        if db.session.query(Users).filter_by(phone=phone, admin=True).scalar():
-            return render_template('index.html')
-        else:
-            return '<h1>Error</h1>'
     return render_template('login.html')
+
+
+@app.route('/list', methods=['GET'])
+def list_page():
+    users = Users.query.all()
+    return render_template('list.html', users=users)
 
 
 @app.route('/login_in', methods=['POST'])
@@ -39,7 +38,7 @@ def login_in():
 
     user = Users.query.filter_by(phone=phone, admin=True).scalar()
 
-    if check_password_hash(user.password, password) is True:
-        return 'Admin'
-    else:
-        return 'Error'
+    if user and check_password_hash(user.password, password) is True:
+        return jsonify({'status': 'Success'})
+
+    return jsonify({'error': 'User not found'})

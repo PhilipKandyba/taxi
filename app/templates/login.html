@@ -1,5 +1,10 @@
 {% extends 'base.html' %}
 
+{% block scripts%}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+{% endblock%}
+
 {% block title %}
     Admin panel
 {% endblock %}
@@ -9,9 +14,11 @@
 {% endblock %}
 
 {% block content %}
-    <form action="{{ url_for('login_in') }}" method="POST">
-        <input type="text" name="phone" required="required" placeholder="Phone"> <br/>
-        <input type="password" name="password" required="required" placeholder="Password"> <br/>
-        <input type="submit">
+    <form>
+        <input type="text" name="phone" id="phone" required="required" placeholder="Phone"> <br/>
+        <input type="password" name="password" id="password" required="required" placeholder="Password"> <br/>
+        <button type="submit">Submit</button>
     </form>
+    <div style="display:none" id="error">Error</div>
+    <div style="display:none" id="success">Success</div>
 {% endblock %}
