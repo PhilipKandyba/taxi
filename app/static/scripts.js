@@ -18,6 +18,7 @@ $(document).ready(function(){
         }
         else{
 //            $('#success').text(data.success).show();
+              window.location.href = '/list';
               alert(data.status)
         }
 
