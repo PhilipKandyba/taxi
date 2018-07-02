@@ -13,12 +13,10 @@ $(document).ready(function(){
         .done(function(data) {
 
         if (data.error){
-//            $('#error').text(data.error).show();
               alert(data.error)
         }
         else{
-//            $('#success').text(data.success).show();
-              window.location.href = '/list';
+              window.location.href = '/admin';
               alert(data.status)
         }
 

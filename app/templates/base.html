@@ -14,8 +14,13 @@
 </head>
 <body>
     <ul>
-        <li><a href="{{ url_for('index') }}">Index</a></li>
-        <li><a href="{{ url_for('login') }}">Login in</a></li>
+        <li><a href="{{ url_for('index') }}">Index</a>
+        {% if session['logged_in']%}
+            <li><a href="{{ url_for('admin') }}">Admin</a></li>
+            <li><a href="{{ url_for('logout') }}">Logout</a></li>
+        {% else %}
+            <li><a href="{{ url_for('login') }}">Login in</a></li>
+        {% endif %}
     </ul>
     <h1>
         {% block header %}

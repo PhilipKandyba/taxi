@@ -25,17 +25,17 @@ def login():
     if not session.get('logged_in'):
         return render_template('login.html')
     else:
-        return redirect(url_for('list_page'))
+        return redirect(url_for('admin'))
 
 
-@app.route('/list', methods=['GET'])
-def list_page():
+@app.route('/admin', methods=['GET'])
+def admin():
     users = Users.query.all()
 
     if not session.get('logged_in'):
         return redirect(url_for('login'))
 
-    return render_template('list.html', users=users)
+    return render_template('admin.html', users=users)
 
 
 @app.route('/login_in', methods=['POST'])
@@ -50,3 +50,9 @@ def login_in():
         return jsonify({'status': 'Success'})
 
     return jsonify({'error': 'User not found'})
+
+
+@app.route('/logout')
+def logout():
+    session['logged_in'] = False
+    return redirect(url_for('login'))
