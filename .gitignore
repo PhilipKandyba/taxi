@@ -1,0 +1,13 @@
+syntax: glob
+
+.*
+*.pyc
+*~
+*.gob
+
+
+.pytest_cache/
+venv/
+__pycache__
+
+logfile.txt
