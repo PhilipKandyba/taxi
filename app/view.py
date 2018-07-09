@@ -47,6 +47,7 @@ def login_in():
 
     if user and check_password_hash(user.password, password) is True:
         session['logged_in'] = True
+
         return jsonify({'status': 'Success'})
 
     return jsonify({'error': 'User not found'})
