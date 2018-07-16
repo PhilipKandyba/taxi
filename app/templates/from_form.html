@@ -9,6 +9,6 @@
 {% endblock %}
 
 {% block content %}
-    <b>Ваш адресс - {{ address }}</b></br>
-    <b>Ваш телефон - {{phone}}</b>
+    <b>Ваш адресс - {{ order.address }}</b></br>
+    <b>Ваш телефон - {{ order.user.phone }}</b>
 {% endblock %}

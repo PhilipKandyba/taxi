@@ -1,8 +1,8 @@
 from app import app
 from app import db
 from flask import render_template, request, jsonify, session, redirect, url_for
-from models import Users
-from werkzeug.security import check_password_hash
+from app.models import User, Order
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 @app.route('/')
@@ -14,10 +14,12 @@ def index():
 def order():
     address = request.form['address']
     phone = request.form['phone']
-    user = Users(phone=phone, address=address)
+    user = User(phone=phone)
     db.session.add(user)
+    order = Order(address=address, user=user)
+    db.session.add(order)
     db.session.commit()
-    return render_template('from_form.html', address=address, phone=phone)
+    return render_template('from_form.html', order=order)
 
 
 @app.route('/login', methods=['POST', 'GET'])
@@ -30,12 +32,12 @@ def login():
 
 @app.route('/admin', methods=['GET'])
 def admin():
-    users = Users.query.all()
+    orders = Order.query.all()
 
     if not session.get('logged_in'):
         return redirect(url_for('login'))
 
-    return render_template('admin.html', users=users)
+    return render_template('admin.html', orders=orders)
 
 
 @app.route('/login_in', methods=['POST'])
@@ -43,7 +45,7 @@ def login_in():
     phone = request.form['phone']
     password = request.form['password']
 
-    user = Users.query.filter_by(phone=phone, admin=True).scalar()
+    user = User.query.filter_by(phone=phone, admin=True).first()
 
     if user and check_password_hash(user.password, password) is True:
         session['logged_in'] = True
@@ -57,3 +59,11 @@ def login_in():
 def logout():
     session['logged_in'] = False
     return redirect(url_for('login'))
+
+
+@app.route('/create_admin&<phone>&<password>')
+def create_admin(phone, password, secret):
+    pw_hash = generate_password_hash(password)
+    admin = User(phone=phone, password=pw_hash, admin=True)
+    db.session.add(admin)
+    db.session.commit()
