@@ -19,7 +19,7 @@ class User(db.Model):
     __tablename__ = "user"
 
     id = db.Column(db.Integer, primary_key=True)
-    phone = db.Column(db.Unicode(16))
+    phone = db.Column(db.Unicode(16), unique=True)
     admin = db.Column(db.Boolean, default=False)
     password = db.Column(db.Unicode(256), nullable=True)
 

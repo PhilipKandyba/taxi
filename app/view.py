@@ -22,9 +22,9 @@ def order():
     return render_template('from_form.html', order=order)
 
 
-@app.route('/login', methods=['POST', 'GET'])
+@app.route('/login')
 def login():
-    if not session.get('logged_in'):
+    if not session.get('logged'):
         return render_template('login.html')
     else:
         return redirect(url_for('admin'))
@@ -34,7 +34,7 @@ def login():
 def admin():
     orders = Order.query.all()
 
-    if not session.get('logged_in'):
+    if not session.get('logged'):
         return redirect(url_for('login'))
 
     return render_template('admin.html', orders=orders)
@@ -48,7 +48,7 @@ def login_in():
     user = User.query.filter_by(phone=phone, admin=True).first()
 
     if user and check_password_hash(user.password, password) is True:
-        session['logged_in'] = True
+        session['logged'] = True
 
         return jsonify({'status': 'Success'})
 
@@ -57,12 +57,17 @@ def login_in():
 
 @app.route('/logout')
 def logout():
-    session['logged_in'] = False
+    session['logged'] = False
     return redirect(url_for('login'))
 
 
-@app.route('/create_admin&<phone>&<password>')
-def create_admin(phone, password, secret):
+@app.route('/create_admin')
+def create_admin():
+    if not session.get('logged'):
+        return redirect(url_for('login'))
+
+    return render_template('create_admin.html')
+
     pw_hash = generate_password_hash(password)
     admin = User(phone=phone, password=pw_hash, admin=True)
     db.session.add(admin)

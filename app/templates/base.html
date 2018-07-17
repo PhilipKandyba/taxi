@@ -15,8 +15,9 @@
 <body>
     <ul>
         <li><a href="{{ url_for('index') }}">Index</a>
-        {% if session['logged_in']%}
+        {% if session['logged']%}
             <li><a href="{{ url_for('admin') }}">Admin</a></li>
+            <li><a href="{{ url_for('create_admin') }}">New admin</a></li>
             <li><a href="{{ url_for('logout') }}">Logout</a></li>
         {% else %}
             <li><a href="{{ url_for('login') }}">Login in</a></li>
