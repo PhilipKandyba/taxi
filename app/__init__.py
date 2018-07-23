@@ -3,6 +3,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_session import Session
 from flask_migrate import Migrate
 
+from view import *
+
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://admin:490759Filosof@127.0.0.1:5432/taxi'
