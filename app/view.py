@@ -1,7 +1,7 @@
 from app import app
 from app import db
 from flask import render_template, request, jsonify, session, redirect, url_for
-from app.models import User, Order
+from models import User, Order
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
@@ -11,15 +11,21 @@ def index():
 
 
 @app.route('/order', methods=['POST'])
-def order():
+def new_order():
     address = request.form['address']
     phone = request.form['phone']
-    user = User(phone=phone)
-    db.session.add(user)
+
+    if User.query.filter_by(phone=phone).first() is not None:
+        user = User.query.filter_by(phone=phone).first()
+    else:
+        user = User(phone=phone)
+
     order = Order(address=address, user=user)
+
     db.session.add(order)
     db.session.commit()
-    return render_template('from_form.html', order=order)
+
+    return render_template('new_order.html', order=order)
 
 
 @app.route('/login')
@@ -61,14 +67,24 @@ def logout():
     return redirect(url_for('login'))
 
 
-@app.route('/create_admin')
-def create_admin():
+@app.route('/new_admin')
+def new_admin():
     if not session.get('logged'):
         return redirect(url_for('login'))
 
     return render_template('create_admin.html')
 
+
+@app.route('/create_admin', methods=['POST'])
+def create_admin():
+    phone = request.form['adm_phone']
+    password = request.form['adm_password']
+
     pw_hash = generate_password_hash(password)
-    admin = User(phone=phone, password=pw_hash, admin=True)
-    db.session.add(admin)
+
+    new_admin = User(phone=phone, password=pw_hash, admin=True)
+
+    db.session.add(new_admin)
     db.session.commit()
+
+    return 'New admin with phone {0} - is created!'.format(phone)

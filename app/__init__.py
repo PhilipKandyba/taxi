@@ -1,11 +1,7 @@
-
-import os
-
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_session import Session
 from flask_migrate import Migrate
-import redis
 
 app = Flask(__name__)
 
@@ -17,13 +13,7 @@ app.config.from_object(__name__)
 Session(app)
 migrate = Migrate(app, db)
 
-from app.models import User
-
 db.create_all()
-
-
-from app.view import index
-
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block content %}
-    <form action="{{ url_for('order') }} " method="POST">
+    <form action="{{ url_for('new_order') }}" method="POST">
         <input type="text"  name="address" required="required" placeholder="Address"><br>
         <input type="text"  name="phone" required="required" placeholder="Phone"><br>
         <input type="submit">

@@ -9,9 +9,9 @@
 {% endblock%}
 
 {% block content %}
-    <form>
-        <input type="text" placeholder="Admin phone"> <br/>
-        <input type="text" placeholder="Admin password"> <br/>
+    <form action="{{ url_for('create_admin') }}" method="POST">
+        <input type="text" name="adm_phone" placeholder="Admin phone"> <br/>
+        <input type="text" name="adm_password" placeholder="Admin password"> <br/>
         <button type="submit">Submit</button>
     </form>
 {% endblock %}
