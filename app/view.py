@@ -1,7 +1,7 @@
 from app import app
 from app import db
 from flask import render_template, request, jsonify, session, redirect, url_for
-from models import User, Order
+from app.models import User, Order
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
@@ -26,7 +26,6 @@ def new_order():
     db.session.commit()
 
     return render_template('new_order.html', order=order)
-
 
 @app.route('/login')
 def login():
@@ -63,7 +62,7 @@ def login_in():
 
 @app.route('/logout')
 def logout():
-    session['logged'] = False
+    session.clear()
     return redirect(url_for('login'))
 
 
@@ -88,3 +87,9 @@ def create_admin():
     db.session.commit()
 
     return 'New admin with phone {0} - is created!'.format(phone)
+
+
+@app.after_request
+def after_request(response):
+    response.headers["Cache-Control"] = "no-cache, no-store"
+    return response

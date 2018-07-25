@@ -10,8 +10,17 @@
 
 {% block content %}
     <div>
-    {% for order in orders %}
-        <p>{{ order.user.phone }} | {{ order.address }}</p>
-    {% endfor %}
+    <table class="table">
+        {% for order in orders %}
+        <tr>
+            <td>
+                {{ order.user.phone }}
+            </td>
+            <td>
+                {{ order.address }}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
     </div>
 {% endblock %}
