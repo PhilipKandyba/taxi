@@ -9,12 +9,17 @@
 {% endblock %}
 
 {% block content %}
-    <form action="{{ url_for('new_order') }}" method="POST">
-        <input type="text"  name="address" required="required" placeholder="Address"><br>
-        <input type="text"  name="phone" required="required" placeholder="Phone"><br>
-        <input type="submit">
-    </form>
-
+    <div class="container">
+        <form action="{{ url_for('new_order') }}" method="POST">
+            <div class="form-group">
+                <input type="text" class="form-control" name="address" required="required" placeholder="Address">
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" name="phone" required="required" placeholder="Phone">
+            </div>
+            <button class="btn btn-primary" type="submit">Do order</button>
+        </form>
+    </div>
     <div>
     {% for user in users %}
         <p>{{ user.phone }} | {{ user.address}}</p>
