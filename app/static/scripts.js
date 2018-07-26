@@ -1,6 +1,6 @@
 $(document).ready(function(){
 
-    $('form').on('submit', function(event){
+    $('#admin-login').on('submit', function(event){
 
         $.ajax({
             data : {
