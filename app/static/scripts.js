@@ -12,12 +12,47 @@ $(document).ready(function(){
         })
         .done(function(data) {
 
-        if (data.error){
-              alert(data.error)
+        if (data.error) {
+            $("#error-notification").show();
+            $("#error-notification").text(data.error);
         }
         else{
               window.location.href = '/admin';
-              alert(data.status)
+        }
+
+        });
+
+        event.preventDefault();
+
+    });
+
+});
+
+$(document).ready(function(){
+
+    $('#new-admin').on('submit', function(event){
+
+        $.ajax({
+            data : {
+                adm_phone: $('#adm_phone').val(),
+                adm_password: $('#adm_password').val(),
+                adm_password_confirmation: $('#adm_password_confirmation').val()
+            },
+            type: 'POST',
+            url: '/create_admin',
+        })
+        .done(function(data) {
+
+        if (data.error) {
+            $("#success-notification").hide();
+            $("#error-notification").show();
+            $("#error-notification").text(data.error);
+        }
+        else{
+            $("#error-notification").hide();
+            $("#success-notification").show();
+            $("#success-notification").text(data.status);
+            $('#new-admin')[0].reset();
         }
 
         });
