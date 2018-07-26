@@ -55,9 +55,9 @@ def login_in():
     if user and check_password_hash(user.password, password) is True:
         session['logged'] = True
 
-        return jsonify({'status': 'Success'}), 200
+        return jsonify({'status': 'Success'})
 
-    return jsonify({'error': 'User not found'}), 400
+    return jsonify({'error': 'User not found'})
 
 
 @app.route('/logout')
@@ -81,10 +81,10 @@ def create_admin():
     conf_password = request.form['adm_password_confirmation']
 
     if password != conf_password:
-        return jsonify({'error': "Confirmation incorrect"}), 400
+        return jsonify({'error': "Confirmation incorrect"})
 
     if User.query.filter_by(phone=phone).first() is not None:
-        return jsonify({'error': "User exist"}), 400
+        return jsonify({'error': "User exist"})
 
     pw_hash = generate_password_hash(password)
 
