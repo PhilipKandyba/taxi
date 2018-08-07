@@ -11,8 +11,16 @@
 {% block content %}
     <div>
     <table class="table">
+        <tr>
+            <th>Date</th>
+            <th>Phone</th>
+            <th>Address</th>
+        </tr>
         {% for order in orders %}
         <tr>
+            <td>
+                {{ order.order_date}}
+            </td>
             <td>
                 {{ order.user.phone }}
             </td>

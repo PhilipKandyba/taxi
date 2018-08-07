@@ -6,12 +6,14 @@ from flask_migrate import Migrate
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://admin:490759Filosof@127.0.0.1:5432/taxi'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
 SESSION_TYPE = 'redis'
 app.config.from_object(__name__)
 Session(app)
-migrate = Migrate(app, db)
 
 from app.models import User
 

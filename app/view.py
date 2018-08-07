@@ -1,8 +1,11 @@
-from app import app
-from app import db
-from flask import render_template, request, jsonify, session, redirect, url_for
-from app.models import User, Order
+from app import app, db
+from app.models import User
+from app.options import is_logged
+from app.bl import user_exists, get_user, new_user, do_order, orders_list
+
 from werkzeug.security import generate_password_hash, check_password_hash
+
+from flask import render_template, request, jsonify, session, redirect, url_for
 
 
 @app.route('/')
@@ -15,32 +18,27 @@ def new_order():
     address = request.form['address']
     phone = request.form['phone']
 
-    if User.query.filter_by(phone=phone).first() is not None:
-        user = User.query.filter_by(phone=phone).first()
+    if user_exists is True:
+        user = get_user(phone=phone)
     else:
-        user = User(phone=phone)
+        user = new_user(phone=phone)
 
-    order = Order(address=address, user=user)
+    order = do_order(address=address, user=user)
 
-    db.session.add(order)
-    db.session.commit()
+    return render_template('new_order.html', new_order=order)
 
-    return render_template('new_order.html', order=order)
 
 @app.route('/login')
 def login():
-    if not session.get('logged'):
-        return render_template('login.html')
-    else:
-        return redirect(url_for('admin'))
+    return render_template('login.html')
 
 
 @app.route('/admin', methods=['GET'])
 def admin():
-    orders = Order.query.all()
-
-    if not session.get('logged'):
+    if is_logged() is False:
         return redirect(url_for('login'))
+
+    orders = orders_list()
 
     return render_template('admin.html', orders=orders)
 
@@ -60,15 +58,9 @@ def login_in():
     return jsonify({'error': 'User not found'})
 
 
-@app.route('/logout')
-def logout():
-    session.clear()
-    return redirect(url_for('login'))
-
-
 @app.route('/new_admin')
 def new_admin():
-    if not session.get('logged'):
+    if is_logged() is False:
         return redirect(url_for('login'))
 
     return render_template('create_admin.html')
@@ -100,3 +92,9 @@ def create_admin():
 def after_request(response):
     response.headers["Cache-Control"] = "no-cache, no-store"
     return response
+
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('login'))

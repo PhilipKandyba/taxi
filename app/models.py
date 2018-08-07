@@ -1,3 +1,4 @@
+import datetime
 from app import db
 
 
@@ -14,6 +15,8 @@ class User(db.Model):
 
 class Order(db.Model):
     __tablename__ = "order"
+
+    order_date = db.Column(db.DateTime, default=datetime.datetime.utcnow)
 
     order_id = db.Column(db.Integer, primary_key=True)
 
