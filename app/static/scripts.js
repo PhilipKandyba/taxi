@@ -14,10 +14,10 @@ $(document).ready(function(){
 
         if (data.error) {
             $("#error-notification").show();
-            $("#error-notification").text(data.error);
+            $("#error-notification").text('Error');
         }
         else{
-              window.location.href = '/admin';
+            window.location.href = data.url;
         }
 
         });

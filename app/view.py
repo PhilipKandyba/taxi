@@ -1,7 +1,7 @@
 from app import app, db
 from app.models import User
 from app.options import is_logged
-from app.bl import user_exists, get_user, new_user, do_order, orders_list
+from app.bl import user_exists, get_user, new_user, do_order, orders_list, admin_login
 
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -48,14 +48,9 @@ def login_in():
     phone = request.form['phone']
     password = request.form['password']
 
-    user = User.query.filter_by(phone=phone, admin=True).first()
+    return admin_login(phone=phone, password=password)
 
-    if user and check_password_hash(user.password, password) is True:
-        session['logged'] = True
 
-        return jsonify({'status': 'Success'})
-
-    return jsonify({'error': 'User not found'})
 
 
 @app.route('/new_admin')
