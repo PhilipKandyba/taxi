@@ -67,7 +67,6 @@ def create_admin():
     return create_new_admin(phone=phone, password=password)
 
 
-
 @app.after_request
 def after_request(response):
     response.headers["Cache-Control"] = "no-cache, no-store"
