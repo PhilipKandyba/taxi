@@ -1,11 +1,11 @@
-from app import app, db
-from app.models import User
+from app import app
 from app.options import is_logged
-from app.bl import user_exists, get_user, new_user, do_order, orders_list, admin_login
+from app.bl import user_exists, get_user, new_user, do_order, orders_list
 
-from werkzeug.security import generate_password_hash, check_password_hash
 
-from flask import render_template, request, jsonify, session, redirect, url_for
+from flask import render_template, request, session, redirect, url_for
+
+from app.admin import create_new_admin, admin_login
 
 
 @app.route('/')
@@ -51,8 +51,6 @@ def login_in():
     return admin_login(phone=phone, password=password)
 
 
-
-
 @app.route('/new_admin')
 def new_admin():
     if is_logged() is False:
@@ -65,22 +63,9 @@ def new_admin():
 def create_admin():
     phone = request.form['adm_phone']
     password = request.form['adm_password']
-    conf_password = request.form['adm_password_confirmation']
 
-    if password != conf_password:
-        return jsonify({'error': "Confirmation incorrect"})
+    return create_new_admin(phone=phone, password=password)
 
-    if User.query.filter_by(phone=phone).first() is not None:
-        return jsonify({'error': "User exist"})
-
-    pw_hash = generate_password_hash(password)
-
-    new_admin = User(phone=phone, password=pw_hash, admin=True)
-
-    db.session.add(new_admin)
-    db.session.commit()
-
-    return jsonify({'status': "New admin was created"})
 
 
 @app.after_request

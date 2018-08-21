@@ -26,9 +26,6 @@ $(document).ready(function(){
 
     });
 
-});
-
-$(document).ready(function(){
 
     $('#new-admin').on('submit', function(event){
 
